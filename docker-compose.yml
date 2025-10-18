@@ -1,0 +1,39 @@
+services:
+  db:
+    container_name: scheduler-postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ace
+      POSTGRES_PASSWORD: ace
+      POSTGRES_DB: interventionsdb
+      PGDATA: /data/postgres
+    volumes:
+      - db:/data/postgres
+    ports:
+      - "5332:5432"
+    networks:
+      - db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ace"]
+      interval: 5s
+      retries: 20
+
+  backend:
+    container_name: scheduler-backend
+    build: ./backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5332/interventionsdb
+      SPRING_DATASOURCE_USERNAME: ace
+      SPRING_DATASOURCE_PASSWORD: ace
+      OPENAI_API_KEY: ${OPEN_AI_KEY:-}
+    ports: ["8080:8080"]
+    depends_on:
+      db: { condition: service_healthy }
+
+networks:
+  db:
+    driver: bridge
+
+volumes:
+  db:
