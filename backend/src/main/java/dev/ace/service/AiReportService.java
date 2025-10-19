@@ -17,7 +17,7 @@ public class AiReportService {
 
     public AiReportService(
             @Value("${openai.api.base:https://api.openai.com}") String base,
-            @Value("${OPEN_AI_KEY}") String key,
+            @Value("${OPENAI_API_KEY}") String key,
             @Value("${openai.model:gpt-4o-mini}") String model
     ) {
         this.model = model;
@@ -28,7 +28,7 @@ public class AiReportService {
     }
 
     public String summarizeSchedule(String plainTextSchedule, String constraintsNote){
-        if(!enabled) return "AI disabled. Set the OPEN_AI_KEY to enable report generation. \n \n"+plainTextSchedule;
+        if(!enabled) return "AI disabled. Set the OPENAI_API_KEY to enable report generation. \n \n"+plainTextSchedule;
 
         String prompt = """
           You are helping a CERN accelerator coordination team. Given the interventions schedule (plain text list),

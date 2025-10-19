@@ -1,4 +1,4 @@
-package com.devikangscode.backend;
+package dev.ace;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

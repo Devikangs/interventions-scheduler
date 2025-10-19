@@ -32,6 +32,7 @@ public class TechnicianController {
         return technicianRepository.save(t);
     }
 
+    @PostMapping("/assign")
     public Assignment assign(
             @RequestParam Long interventionId,
             @RequestParam Long technicianId,

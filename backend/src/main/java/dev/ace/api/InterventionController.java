@@ -3,7 +3,6 @@ package dev.ace.api;
 import dev.ace.domain.Intervention;
 import dev.ace.repo.InterventionRepository;
 import dev.ace.service.SchedulingService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +31,7 @@ public class InterventionController {
     public Intervention create(
             @RequestBody @Valid Intervention i
     ){
+        System.out.println(i);
         return interventionRepository.save(i);
     }
 
