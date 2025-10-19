@@ -1,18 +1,16 @@
 services:
   db:
     container_name: scheduler-postgres
-    image: postgres:latest
+    image: postgres:16
     environment:
       POSTGRES_USER: ace
       POSTGRES_PASSWORD: ace
-      POSTGRES_DB: interventionsdb
+      POSTGRES_DB: interventionsdb     # make sure this matches what you connect to
       PGDATA: /data/postgres
     volumes:
       - db:/data/postgres
     ports:
-      - "5332:5432"
-    networks:
-      - db
+      - "5432:5432"                    # host 5433 -> container 5432 (pick any free host port)
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ace"]
@@ -23,17 +21,16 @@ services:
     container_name: scheduler-backend
     build: ./backend
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5332/interventionsdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/interventionsdb  # container-to-container
       SPRING_DATASOURCE_USERNAME: ace
       SPRING_DATASOURCE_PASSWORD: ace
-      OPENAI_API_KEY: ${OPEN_AI_KEY:-}
-    ports: ["8080:8080"]
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      SPRING_AI_OPENAI_API_KEY: ${OPENAI_API_KEY}
+    ports:
+      - "8080:8080"
     depends_on:
-      db: { condition: service_healthy }
-
-networks:
-  db:
-    driver: bridge
+      db:
+        condition: service_healthy
 
 volumes:
   db:

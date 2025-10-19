@@ -5,6 +5,7 @@
 .idea/
 *.iml
 out/
+.env
 
 # Java / Maven / Gradle
 target/
