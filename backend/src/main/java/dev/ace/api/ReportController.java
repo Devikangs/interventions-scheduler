@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController @RequestMapping("/api/v1/reports")
 public class ReportController {
     private final AiReportService aiReportService;
